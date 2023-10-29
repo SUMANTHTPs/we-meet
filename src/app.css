@@ -1,0 +1,28 @@
+/* Hide the scrollbar when not interacting (initial state) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  transition: width 0.5s, height 0.5s; /* Add a transition for smooth animation */
+}
+
+/* Style the scrollbar thumb and track as you mentioned */
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+/* Hover on an element to make the scrollbar visible */
+
+.my-scrollable-element:hover ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
