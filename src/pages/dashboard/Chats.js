@@ -17,6 +17,7 @@ import { useSearchParams } from "react-router-dom";
 import useResponsive from "../../hooks/useResponsive";
 // import BottomNav from "../../layouts/dashboard/BottomNav";
 import { ChatList } from "../../data";
+import { StyledBadge } from "../../components/StyledBadge";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -54,35 +55,6 @@ const truncateText = (string, n) => {
 const StyledChatBox = styled(Box)(({ theme }) => ({
   "&:hover": {
     cursor: "pointer",
-  },
-}));
-
-export const StyledBadge = styled(Badge)(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    backgroundColor: "#44b700",
-    color: "#44b700",
-    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    "&::after": {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      animation: "ripple 1.2s infinite ease-in-out",
-      border: "1px solid currentColor",
-      content: '""',
-    },
-  },
-  "@keyframes ripple": {
-    "0%": {
-      transform: "scale(.8)",
-      opacity: 1,
-    },
-    "100%": {
-      transform: "scale(2.4)",
-      opacity: 0,
-    },
   },
 }));
 
@@ -214,14 +186,22 @@ const Chats = () => {
               </Typography>
               {/* Chat List */}
               {ChatList.filter((el) => el.pinned).map((el, idx) => {
-                return <ChatElement {...el} />;
+                return (
+                  <div key={idx}>
+                    <ChatElement {...el} />
+                  </div>
+                );
               })}
               <Typography variant="subtitle2" sx={{ color: "#676667" }}>
                 All Chats
               </Typography>
               {/* Chat List */}
               {ChatList.filter((el) => !el.pinned).map((el, idx) => {
-                return <ChatElement {...el} />;
+                return (
+                  <div key={idx}>
+                    <ChatElement {...el} />
+                  </div>
+                );
               })}
             </Stack>
           </SimpleBarStyle>
