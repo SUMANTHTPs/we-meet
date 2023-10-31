@@ -15,9 +15,8 @@ import { SimpleBarStyle } from "../../components/Scrollbar";
 import { useTheme, styled, alpha } from "@mui/material/styles";
 import { useSearchParams } from "react-router-dom";
 import useResponsive from "../../hooks/useResponsive";
-// import BottomNav from "../../layouts/dashboard/BottomNav";
+import BottomNav from "../../layouts/dashboard/BottomNav";
 import { ChatList } from "../../data";
-import { StyledBadge } from "../../components/StyledBadge";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -58,6 +57,35 @@ const StyledChatBox = styled(Box)(({ theme }) => ({
   },
 }));
 
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    backgroundColor: "#44b700",
+    color: "#44b700",
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    "&::after": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      animation: "ripple 1.2s infinite ease-in-out",
+      border: "1px solid currentColor",
+      content: '""',
+    },
+  },
+  "@keyframes ripple": {
+    "0%": {
+      transform: "scale(.8)",
+      opacity: 1,
+    },
+    "100%": {
+      transform: "scale(2.4)",
+      opacity: 0,
+    },
+  },
+}));
+
 const ChatElement = ({ img, name, msg, time, unread, online, id }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedChatId = searchParams.get("id");
@@ -79,7 +107,9 @@ const ChatElement = ({ img, name, msg, time, unread, online, id }) => {
       }}
       sx={{
         width: "100%",
+
         borderRadius: 1,
+
         backgroundColor: isSelected
           ? theme.palette.mode === "light"
             ? alpha(theme.palette.primary.main, 0.5)
@@ -144,10 +174,10 @@ const Chats = () => {
         boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
       }}
     >
-      {/* {!isDesktop && (
+      {!isDesktop && (
         // Bottom Nav
         <BottomNav />
-      )} */}
+      )}
 
       <Stack p={3} spacing={2} sx={{ maxHeight: "100vh" }}>
         <Stack
@@ -186,22 +216,14 @@ const Chats = () => {
               </Typography>
               {/* Chat List */}
               {ChatList.filter((el) => el.pinned).map((el, idx) => {
-                return (
-                  <div key={idx}>
-                    <ChatElement {...el} />
-                  </div>
-                );
+                return <ChatElement key={idx} {...el} />;
               })}
               <Typography variant="subtitle2" sx={{ color: "#676667" }}>
                 All Chats
               </Typography>
               {/* Chat List */}
               {ChatList.filter((el) => !el.pinned).map((el, idx) => {
-                return (
-                  <div key={idx}>
-                    <ChatElement {...el} />
-                  </div>
-                );
+                return <ChatElement key={idx} {...el} />;
               })}
             </Stack>
           </SimpleBarStyle>

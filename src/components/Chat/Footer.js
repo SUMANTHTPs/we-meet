@@ -24,6 +24,7 @@ import useResponsive from "../../hooks/useResponsive";
 
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import { useSelector } from "react-redux";
 
 const StyledInput = styled(TextField)(({ theme }) => ({
   "& .MuiInputBase-input": {
@@ -83,8 +84,8 @@ const ChatInput = ({ openPicker, setOpenPicker }) => {
                 display: openActions ? "inline-block" : "none",
               }}
             >
-              {Actions.map((el) => (
-                <Tooltip placement="right" title={el.title}>
+              {Actions.map((el, idx) => (
+                <Tooltip key={idx} placement="right" title={el.title}>
                   <Fab
                     onClick={() => {
                       setOpenActions(!openActions);
@@ -102,7 +103,7 @@ const ChatInput = ({ openPicker, setOpenPicker }) => {
               ))}
             </Stack>
 
-            <InputAdornment>
+            <InputAdornment position="start">
               <IconButton
                 onClick={() => {
                   setOpenActions(!openActions);
@@ -115,7 +116,7 @@ const ChatInput = ({ openPicker, setOpenPicker }) => {
         ),
         endAdornment: (
           <Stack sx={{ position: "relative" }}>
-            <InputAdornment>
+            <InputAdornment position="end">
               <IconButton
                 onClick={() => {
                   setOpenPicker(!openPicker);
@@ -136,7 +137,7 @@ const Footer = () => {
 
   const isMobile = useResponsive("between", "md", "xs", "sm");
 
-  const [searchParams] = useSearchParams();
+  const { sideBar } = useSelector((state) => state.app);
 
   const [openPicker, setOpenPicker] = React.useState(false);
   return (
@@ -165,11 +166,7 @@ const Footer = () => {
                 position: "fixed",
                 display: openPicker ? "inline" : "none",
                 bottom: 81,
-                right: isMobile
-                  ? 20
-                  : searchParams.get("open") === "true"
-                  ? 420
-                  : 100,
+                right: isMobile ? 20 : sideBar.open ? 420 : 100,
               }}
             >
               <Picker

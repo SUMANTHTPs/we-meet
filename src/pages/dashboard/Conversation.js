@@ -1,0 +1,111 @@
+import { Stack, Box } from "@mui/material";
+import React from "react";
+import { useTheme } from "@mui/material/styles";
+import { SimpleBarStyle } from "../../components/Scrollbar";
+
+import { ChatHeader, ChatFooter } from "../../components/chat";
+import useResponsive from "../../hooks/useResponsive";
+import { Chat_History } from "../../data";
+import {
+  DocMsg,
+  LinkMsg,
+  MediaMsg,
+  ReplyMsg,
+  TextMsg,
+  Timeline,
+} from "../../sections/dashboard/Conversation";
+
+const Conversation = ({ isMobile, starred }) => {
+  return (
+    <Box p={isMobile ? 1 : 3}>
+      <Stack spacing={3}>
+        {Chat_History.map((el, idx) => {
+          switch (el.type) {
+            case "divider":
+              return (
+                // Timeline
+                <Timeline key={idx} el={el} />
+              );
+
+            case "msg":
+              switch (el.subtype) {
+                case "img":
+                  return (
+                    // Media Message
+                    <MediaMsg key={idx} el={el} />
+                  );
+
+                case "doc":
+                  return (
+                    // Doc Message
+                    <DocMsg key={idx} el={el} />
+                  );
+                case "link":
+                  return (
+                    //  Link Message
+                    <LinkMsg key={idx} el={el} starred={starred} />
+                  );
+
+                case "reply":
+                  return (
+                    //  ReplyMessage
+                    <ReplyMsg key={idx} el={el} />
+                  );
+
+                default:
+                  return (
+                    // Text Message
+                    <TextMsg key={idx} el={el} />
+                  );
+              }
+
+            default:
+              return <></>;
+          }
+        })}
+      </Stack>
+    </Box>
+  );
+};
+
+const ChatComponent = () => {
+  const isMobile = useResponsive("between", "md", "xs", "sm");
+  const theme = useTheme();
+
+  return (
+    <Stack
+      height={"100%"}
+      maxHeight={"100vh"}
+      width={isMobile ? "100vw" : "auto"}
+    >
+      {/*  */}
+      <ChatHeader />
+      <Box
+        width={"100%"}
+        sx={{
+          position: "relative",
+          flexGrow: 1,
+          overflow: "scroll",
+
+          backgroundColor:
+            theme.palette.mode === "light"
+              ? "#F0F4FA"
+              : theme.palette.background,
+
+          boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
+        }}
+      >
+        <SimpleBarStyle timeout={500} clickOnTrack={false}>
+          <Conversation isMobile={isMobile} />
+        </SimpleBarStyle>
+      </Box>
+
+      {/*  */}
+      <ChatFooter />
+    </Stack>
+  );
+};
+
+export default ChatComponent;
+
+export { Conversation };
