@@ -65,28 +65,22 @@ const GeneralApp = () => {
             </Stack>
           )}
         </Box>
-        {
-          sideBar.open &&
-            (() => {
-              switch (sideBar.type) {
-                case "CONTACT":
-                  return <Contact />;
+        {sideBar.open &&
+          (() => {
+            switch (sideBar.type) {
+              case "CONTACT":
+                return <Contact />;
 
-                case "STARRED":
-                  return <StarredMessages />;
+              case "STARRED":
+                return <StarredMessages />;
 
-                case "SHARED":
-                  return <Media />;
+              case "SHARED":
+                return <Media />;
 
-                default:
-                  break;
-              }
-            })()
-          //  Contact Info
-          //
-
-          //
-        }
+              default:
+                break;
+            }
+          })()}
       </Stack>
     </>
   );

@@ -4,7 +4,7 @@ import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { ArrowLeft } from "phosphor-react";
 import useResponsive from "../../hooks/useResponsive";
 import { useDispatch } from "react-redux";
-import { ToggleSidebar, UpdateSidebarType } from "../../redux/slices/app";
+import { UpdateSidebarType } from "../../redux/slices/app";
 import { Conversation } from "../../pages/dashboard/Conversation";
 
 const StarredMessages = () => {

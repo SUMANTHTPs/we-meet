@@ -15,7 +15,7 @@ import {
   Timeline,
 } from "../../sections/dashboard/Conversation";
 
-const Conversation = ({ isMobile, starred }) => {
+const Conversation = ({ isMobile, menu }) => {
   return (
     <Box p={isMobile ? 1 : 3}>
       <Stack spacing={3}>
@@ -24,7 +24,7 @@ const Conversation = ({ isMobile, starred }) => {
             case "divider":
               return (
                 // Timeline
-                <Timeline key={idx} el={el} />
+                <Timeline el={el} />
               );
 
             case "msg":
@@ -32,30 +32,30 @@ const Conversation = ({ isMobile, starred }) => {
                 case "img":
                   return (
                     // Media Message
-                    <MediaMsg key={idx} el={el} />
+                    <MediaMsg el={el} menu={menu} />
                   );
 
                 case "doc":
                   return (
                     // Doc Message
-                    <DocMsg key={idx} el={el} />
+                    <DocMsg el={el} menu={menu} />
                   );
                 case "link":
                   return (
                     //  Link Message
-                    <LinkMsg key={idx} el={el} starred={starred} />
+                    <LinkMsg el={el} menu={menu} />
                   );
 
                 case "reply":
                   return (
                     //  ReplyMessage
-                    <ReplyMsg key={idx} el={el} />
+                    <ReplyMsg el={el} menu={menu} />
                   );
 
                 default:
                   return (
                     // Text Message
-                    <TextMsg key={idx} el={el} />
+                    <TextMsg el={el} menu={menu} />
                   );
               }
 
@@ -96,7 +96,7 @@ const ChatComponent = () => {
         }}
       >
         <SimpleBarStyle timeout={500} clickOnTrack={false}>
-          <Conversation isMobile={isMobile} />
+          <Conversation menu={true} isMobile={isMobile} />
         </SimpleBarStyle>
       </Box>
 
