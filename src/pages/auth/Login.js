@@ -13,7 +13,7 @@ export default function LoginPage() {
       {(settings) => (
         <>
           <Stack spacing={2} sx={{ mb: 5, position: "relative" }}>
-            <Typography variant="h4">Login to Tawk</Typography>
+            <Typography variant="h4">Login to We-meet</Typography>
 
             <Stack direction="row" spacing={0.5}>
               <Typography variant="body2">New user?</Typography>

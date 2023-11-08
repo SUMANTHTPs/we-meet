@@ -23,7 +23,7 @@ export default function AuthLoginForm() {
   });
 
   const defaultValues = {
-    email: "demo@tawk.com",
+    email: "demo@wemeet.com",
     password: "demo1234",
   };
 
