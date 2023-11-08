@@ -22,8 +22,8 @@ import {
 
 import { useTheme } from "@mui/material/styles";
 import { faker } from "@faker-js/faker";
-import ThemeDialog from "../../sections/settings/ThemeDialog";
-import ShortcutDialog from "../../sections/settings/ShortcutDialog";
+import ThemeDialog from "../../../sections/settings/ThemeDialog";
+import ShortcutDialog from "../../../sections/settings/ShortcutDialog";
 
 const Settings = () => {
   const theme = useTheme();
@@ -123,7 +123,7 @@ const Settings = () => {
                 <CaretLeft size={24} color={"#4B4B4B"} />
               </IconButton>
 
-              <Typography variant="h6">Settings</Typography>
+              <Typography variant="h5">Settings</Typography>
             </Stack>
 
             {/* Profile */}

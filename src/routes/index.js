@@ -20,20 +20,6 @@ const Loadable = (Component) => (props) => {
 export default function Router() {
   return useRoutes([
     {
-      path: "/",
-      element: <DashboardLayout />,
-      children: [
-        { element: <Navigate to={DEFAULT_PATH} replace />, index: true },
-        { path: "app", element: <GeneralApp /> },
-        { path: "settings", element: <Settings /> },
-        { path: "conversation", element: <Conversation /> },
-        { path: "chats", element: <Chats /> },
-        { path: "contact", element: <Contact /> },
-        { path: "404", element: <Page404 /> },
-        { path: "*", element: <Navigate to="/404" replace /> },
-      ],
-    },
-    {
       path: "/auth",
       element: <AuthLayout />,
       children: [
@@ -43,6 +29,26 @@ export default function Router() {
         { path: "new-password", element: <NewPasswordPage /> },
       ],
     },
+    {
+      path: "/",
+      element: <DashboardLayout />,
+      children: [
+        { element: <Navigate to={DEFAULT_PATH} replace />, index: true },
+        { path: "app", element: <GeneralApp /> },
+        { path: "group", element: <Group /> },
+        { path: "settings", element: <Settings /> },
+        { path: "conversation", element: <Conversation /> },
+        { path: "chats", element: <Chats /> },
+        { path: "contact", element: <Contact /> },
+        { path: "profile", element: <Profile /> },
+
+        { path: "call", element: <CallPage /> },
+
+        { path: "404", element: <Page404 /> },
+        { path: "*", element: <Navigate to="/404" replace /> },
+      ],
+    },
+
     { path: "*", element: <Navigate to="/404" replace /> },
   ]);
 }
@@ -54,9 +60,11 @@ const Conversation = Loadable(
   lazy(() => import("../pages/dashboard/Conversation"))
 );
 const Chats = Loadable(lazy(() => import("../pages/dashboard/Chats")));
+const Group = Loadable(lazy(() => import("../pages/dashboard/Group")));
+const CallPage = Loadable(lazy(() => import("../pages/dashboard/Call")));
 const Contact = Loadable(lazy(() => import("../sections/dashboard/Contact")));
 const Page404 = Loadable(lazy(() => import("../pages/Page404")));
-const Settings = Loadable(lazy(() => import("../pages/dashboard/Settings")));
+
 const LoginPage = Loadable(lazy(() => import("../pages/auth/Login")));
 const RegisterPage = Loadable(lazy(() => import("../pages/auth/Register")));
 const ResetPasswordPage = Loadable(
@@ -64,4 +72,10 @@ const ResetPasswordPage = Loadable(
 );
 const NewPasswordPage = Loadable(
   lazy(() => import("../pages/auth/NewPassword"))
+);
+
+// Settings
+const Settings = Loadable(lazy(() => import("../pages/dashboard/settings")));
+const Profile = Loadable(
+  lazy(() => import("../pages/dashboard/settings/Profile"))
 );

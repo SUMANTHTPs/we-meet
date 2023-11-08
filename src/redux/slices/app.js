@@ -9,6 +9,8 @@ const initialState = {
     open: false,
     type: "CONTACT", // can be CONTACT, STARRED, SHARED
   },
+  isLoggedIn: true,
+  tab: 0, // [0, 1, 2, 3]
 };
 
 const slice = createSlice({
@@ -21,6 +23,9 @@ const slice = createSlice({
     },
     updateSideBarType(state, action) {
       state.sideBar.type = action.payload.type;
+    },
+    updateTab(state, action) {
+      state.tab = action.payload.tab;
     },
   },
 });
@@ -38,5 +43,10 @@ export function ToggleSidebar() {
 export function UpdateSidebarType(type) {
   return async () => {
     dispatch(slice.actions.updateSideBarType({ type }));
+  };
+}
+export function UpdateTab(tab) {
+  return async () => {
+    dispatch(slice.actions.updateTab({ tab }));
   };
 }
