@@ -85,6 +85,7 @@ const SideBar = () => {
             {Nav_Buttons.map((el) => {
               return el.index === selectedTab ? (
                 <Box
+                  key={el.index}
                   sx={{
                     backgroundColor: theme.palette.primary.main,
                     borderRadius: 1.5,
@@ -100,6 +101,7 @@ const SideBar = () => {
                 </Box>
               ) : (
                 <IconButton
+                  key={el.index}
                   onClick={() => {
                     handleChangeTab(el.index);
                   }}
@@ -119,6 +121,7 @@ const SideBar = () => {
             {Nav_Setting.map((el) => {
               return el.index === selectedTab ? (
                 <Box
+                  key={el.index}
                   sx={{
                     backgroundColor: theme.palette.primary.main,
                     borderRadius: 1.5,
@@ -126,6 +129,7 @@ const SideBar = () => {
                   p={1}
                 >
                   <IconButton
+                    key={el.index}
                     onClick={() => {
                       // dispatch(UpdateTab(el.index));
                     }}
@@ -136,6 +140,7 @@ const SideBar = () => {
                 </Box>
               ) : (
                 <IconButton
+                  key={el.index}
                   onClick={() => {
                     handleChangeTab(el.index);
 

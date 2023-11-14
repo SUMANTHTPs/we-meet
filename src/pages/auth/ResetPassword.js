@@ -23,7 +23,7 @@ const ResetPassword = () => {
 
       <Link
         component={RouterLink}
-        to={"/auth/login"}
+        to={"/auth/register"}
         color="inherit"
         variant="subtitle2"
         sx={{

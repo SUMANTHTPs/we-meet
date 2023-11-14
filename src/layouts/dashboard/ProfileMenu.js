@@ -4,8 +4,11 @@ import { Avatar, Box, Fade, Menu, MenuItem, Stack } from "@mui/material";
 import { faker } from "@faker-js/faker";
 
 import { Profile_Menu } from "../../data";
+import { useDispatch } from "react-redux";
+import { LogoutUser } from "../../redux/slices/auth";
 
 const ProfileMenu = () => {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenu = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -47,8 +50,16 @@ const ProfileMenu = () => {
       >
         <Box p={1}>
           <Stack spacing={1}>
-            {Profile_Menu.map((el) => (
-              <MenuItem key={el.title} onClick={handleClose}>
+            {Profile_Menu.map((el, idx) => (
+              <MenuItem
+                key={el.title}
+                onClick={() => {
+                  if (idx === 2) {
+                    dispatch(LogoutUser());
+                  }
+                  handleClose();
+                }}
+              >
                 <Stack
                   sx={{ width: 100 }}
                   direction="row"

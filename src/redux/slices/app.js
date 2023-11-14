@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-//
-import { dispatch } from "../store";
 
 // ----------------------------------------------------------------------
 
@@ -36,17 +34,17 @@ export default slice.reducer;
 // ----------------------------------------------------------------------
 
 export function ToggleSidebar() {
-  return async () => {
+  return async (dispatch, getState) => {
     dispatch(slice.actions.toggleSideBar());
   };
 }
 export function UpdateSidebarType(type) {
-  return async () => {
+  return async (dispatch, getState) => {
     dispatch(slice.actions.updateSideBarType({ type }));
   };
 }
 export function UpdateTab(tab) {
-  return async () => {
+  return async (dispatch, getState) => {
     dispatch(slice.actions.updateTab({ tab }));
   };
 }

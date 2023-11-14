@@ -5,10 +5,13 @@ import { useForm } from "react-hook-form";
 // components
 import FormProvider, { RHFTextField } from "../../components/hook-form";
 import { Button } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { ForgotPassword } from "../../redux/slices/auth";
 
 // ----------------------------------------------------------------------
 
 export default function AuthResetPasswordForm() {
+  const dispatch = useDispatch();
   const ResetPasswordSchema = Yup.object().shape({
     email: Yup.string()
       .required("Email is required")
@@ -28,6 +31,7 @@ export default function AuthResetPasswordForm() {
   const onSubmit = async (data) => {
     try {
       //   Send API Request
+      dispatch(ForgotPassword(data));
     } catch (error) {
       console.error(error);
     }
