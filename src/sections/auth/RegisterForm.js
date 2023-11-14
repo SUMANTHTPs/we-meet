@@ -9,11 +9,14 @@ import { LoadingButton } from "@mui/lab";
 // components
 import FormProvider, { RHFTextField } from "../../components/hook-form";
 import { Eye, EyeSlash } from "phosphor-react";
+import { useDispatch } from "react-redux";
+import { RegisterUser } from "../../redux/slices/auth";
 
 // ----------------------------------------------------------------------
 
 export default function AuthRegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
 
   const LoginSchema = Yup.object().shape({
     firstName: Yup.string().required("First name required"),
@@ -27,7 +30,7 @@ export default function AuthRegisterForm() {
   const defaultValues = {
     firstName: "",
     lastName: "",
-    email: "demo@tawk.com",
+    email: "demo@wemeet.com",
     password: "demo1234",
   };
 
@@ -46,6 +49,7 @@ export default function AuthRegisterForm() {
   const onSubmit = async (data) => {
     try {
       // submit data to backend
+      dispatch(RegisterUser(data));
     } catch (error) {
       console.error(error);
       reset();

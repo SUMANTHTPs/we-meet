@@ -27,6 +27,7 @@ export default function Router() {
         { path: "register", element: <RegisterPage /> },
         { path: "reset-password", element: <ResetPasswordPage /> },
         { path: "new-password", element: <NewPasswordPage /> },
+        { path: "verify", element: <VerifyRegistration /> },
       ],
     },
     {
@@ -78,4 +79,7 @@ const NewPasswordPage = Loadable(
 const Settings = Loadable(lazy(() => import("../pages/dashboard/settings")));
 const Profile = Loadable(
   lazy(() => import("../pages/dashboard/settings/Profile"))
+);
+const VerifyRegistration = Loadable(
+  lazy(() => import("../pages/auth/VerifyRegistration"))
 );
