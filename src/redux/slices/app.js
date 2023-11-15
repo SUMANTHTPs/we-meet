@@ -9,10 +9,15 @@ const initialState = {
   },
   isLoggedIn: true,
   tab: 0, // [0, 1, 2, 3]
+  snackbar: {
+    message: null,
+    severity: null,
+    open: false,
+  },
 };
 
 const slice = createSlice({
-  name: "mail",
+  name: "app",
   initialState,
   reducers: {
     // Toggle Sidebar
@@ -24,6 +29,17 @@ const slice = createSlice({
     },
     updateTab(state, action) {
       state.tab = action.payload.tab;
+    },
+    openSnackBar(state, action) {
+      console.log(action.payload);
+      state.snackbar.open = true;
+      state.snackbar.severity = action.payload.severity;
+      state.snackbar.message = action.payload.message;
+    },
+    closeSnackBar(state) {
+      console.log("This is getting executed");
+      state.snackbar.open = false;
+      state.snackbar.message = null;
     },
   },
 });
@@ -48,3 +64,22 @@ export function UpdateTab(tab) {
     dispatch(slice.actions.updateTab({ tab }));
   };
 }
+
+export const closeSnackBar = () => async (dispatch, getState) => {
+  dispatch(slice.actions.closeSnackBar());
+};
+
+export const showSnackbar =
+  ({ severity, message }) =>
+  async (dispatch, getState) => {
+    dispatch(
+      slice.actions.openSnackBar({
+        message,
+        severity,
+      })
+    );
+
+    setTimeout(() => {
+      dispatch(slice.actions.closeSnackBar());
+    }, 4000);
+  };
