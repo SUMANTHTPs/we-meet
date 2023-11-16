@@ -10,6 +10,7 @@ const initialState = {
   isLoading: false,
   email: "",
   error: false,
+  userId: null,
 };
 
 const slice = createSlice({
@@ -23,10 +24,12 @@ const slice = createSlice({
     logIn(state, action) {
       state.isLoggedIn = action.payload.isLoggedIn;
       state.token = action.payload.token;
+      state.userId = action.payload.userId;
     },
     signOut(state, action) {
       state.isLoggedIn = false;
       state.token = "";
+      state.userId = null;
     },
     updateRegisterEmail(state, action) {
       state.email = action.payload.email;
@@ -54,14 +57,16 @@ export function LoginUser(formValues) {
       )
       .then(function (response) {
         dispatch(
-          showSnackbar({ severity: "success", message: response.data.message })
-        );
-        dispatch(
           slice.actions.logIn({
             isLoggedIn: true,
             token: response.data.token,
+            userId: response.data.userId,
           })
         );
+        dispatch(
+          showSnackbar({ severity: "success", message: response.data.message })
+        );
+        window.localStorage.setItem("userId", response.data.userId);
       })
       .catch(function (error, response) {
         console.log(error);

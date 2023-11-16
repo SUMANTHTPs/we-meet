@@ -1,33 +1,13 @@
-import PropTypes from "prop-types";
 import { useRef } from "react";
 // form
 import { useFormContext, Controller } from "react-hook-form";
 // @mui
 import { Stack, TextField } from "@mui/material";
-// hooks
-import useEventListener from "../../hooks/useEventListener";
-
-// ----------------------------------------------------------------------
-
-RHFCodes.propTypes = {
-  keyName: PropTypes.string,
-  inputs: PropTypes.arrayOf(PropTypes.string),
-};
 
 export default function RHFCodes({ keyName = "", inputs = [], ...other }) {
   const codesRef = useRef(null);
 
-  const { control, setValue } = useFormContext();
-
-  const handlePaste = (event) => {
-    let data = event.clipboardData.getData("text");
-
-    data = data.split("");
-
-    inputs.map((input, index) => setValue(input, data[index]));
-
-    event.preventDefault();
-  };
+  const { control } = useFormContext();
 
   const handleChangeWithNextField = (event, handleChange) => {
     const { maxLength, value, name } = event.target;
@@ -50,8 +30,6 @@ export default function RHFCodes({ keyName = "", inputs = [], ...other }) {
 
     handleChange(event);
   };
-
-  useEventListener("paste", handlePaste, codesRef);
 
   return (
     <Stack direction="row" spacing={2} justifyContent="center" ref={codesRef}>
