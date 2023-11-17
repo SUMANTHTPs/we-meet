@@ -17,15 +17,6 @@ const Alert = React.forwardRef((props, ref) => (
 ));
 
 function App() {
-  useEffect(() => {
-    socket.on("new_friend_request", (data) => {
-      alert("New friend request received");
-      console.log(data);
-    });
-
-    // Remove event listener on component unmount
-    return () => socket.off("new_friend_request");
-  }, []);
   const dispatch = useDispatch();
   const { severity, message, open } = useSelector(
     (state) => state.app.snackbar

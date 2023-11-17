@@ -83,6 +83,7 @@ export function LoginUser(formValues) {
 
 export function LogoutUser() {
   return async (dispatch, getState) => {
+    window.localStorage.removeItem("userId");
     dispatch(slice.actions.signOut());
     dispatch(
       showSnackbar({ severity: "success", message: "Logout successful" })
@@ -221,6 +222,7 @@ export function VerifyEmail(formValues) {
           slice.actions.logIn({
             isLoggedIn: true,
             token: response.data.token,
+            userId: response.data.userId,
           })
         );
         dispatch(

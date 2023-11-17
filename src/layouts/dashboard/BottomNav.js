@@ -36,6 +36,7 @@ const BottomNav = () => {
         {Nav_Buttons.map((el) => {
           return el.index === selectedTab ? (
             <Box
+              key={el.index}
               sx={{
                 backgroundColor: theme.palette.primary.main,
                 borderRadius: 1.5,
@@ -48,6 +49,7 @@ const BottomNav = () => {
             </Box>
           ) : (
             <IconButton
+              key={el.index}
               onClick={() => {
                 handleChangeTab(el.index);
               }}

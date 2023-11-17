@@ -43,11 +43,6 @@ const FriendsList = () => {
     dispatch(FetchFriends());
   }, []);
 
-  // Check if friends is an array before mapping
-  if (!Array.isArray(friends)) {
-    return null; // or handle the case where friends is not an array
-  }
-  
   return (
     <>
       {friends?.map((el, idx) => {
@@ -69,7 +64,7 @@ const RequestsList = () => {
   return (
     <>
       {friendRequests?.map((el, idx) => {
-        return <FriendRequestElement key={idx} {...el} />;
+        return <FriendRequestElement key={idx} {...el.sender} id={el._id} />;
       })}
     </>
   );
