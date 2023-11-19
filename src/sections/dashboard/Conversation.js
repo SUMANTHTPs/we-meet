@@ -204,7 +204,7 @@ const LinkMsg = ({ el, menu }) => {
             variant="body2"
             color={el.incoming ? theme.palette.text : "#fff"}
           >
-            {el.message}
+            <div dangerouslySetInnerHTML={{ __html: el.message }}></div>
           </Typography>
         </Stack>
       </Box>
