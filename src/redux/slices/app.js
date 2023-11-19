@@ -19,6 +19,8 @@ const initialState = {
   friends: [], // all friends
   friendRequests: [], // all friend requests
   socket: null,
+  chatType: null,
+  roomId: null,
 };
 
 const slice = createSlice({
@@ -57,6 +59,10 @@ const slice = createSlice({
     },
     updateSocket(state, action) {
       state.socket = action.payload.socket;
+    },
+    selectConversation(state, action) {
+      state.chatType = "individual";
+      state.roomId = action.payload.roomId;
     },
   },
 });
@@ -105,7 +111,7 @@ export function FetchUsers() {
   return async (dispatch, getState) => {
     await axios
       .get(
-        "/user/get-all",
+        "/user/get-users",
 
         {
           headers: {
@@ -176,3 +182,9 @@ export function updateSocket(socket) {
     dispatch(slice.actions.updateSocket({ socket }));
   };
 }
+
+export const SelectConversation = ({ roomId }) => {
+  return async (dispatch, getState) => {
+    dispatch(slice.actions.selectConversation({ roomId }));
+  };
+};

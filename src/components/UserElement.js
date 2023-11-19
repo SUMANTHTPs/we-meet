@@ -13,6 +13,8 @@ import { Chat } from "phosphor-react";
 import { useSelector } from "react-redux";
 import { socket } from "../socket";
 
+const userId = window.localStorage.getItem("userId");
+
 const StyledChatBox = styled(Box)(({ theme }) => ({
   "&:hover": {
     cursor: "pointer",
@@ -48,15 +50,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const UserElement = ({
-  img,
-  firstName,
-  lastName,
-  incoming,
-  missed,
-  online,
-  _id,
-}) => {
+const UserElement = ({ img, firstName, lastName, online, _id }) => {
   const { userId } = useSelector((state) => state.auth);
   const theme = useTheme();
 
@@ -159,7 +153,7 @@ const FriendRequestElement = ({
           <Button
             onClick={() => {
               //  emit "accept_request" event
-              // socket.emit("accept_request", { request_id: id });
+              socket.emit("accept_request", { requestId: id });
             }}
           >
             Accept Request
@@ -222,6 +216,7 @@ const FriendElement = ({
           <IconButton
             onClick={() => {
               // start a new conversation
+              socket.emit("start-conversation", { to: _id, from: userId });
             }}
           >
             <Chat />

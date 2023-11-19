@@ -218,6 +218,9 @@ export function VerifyEmail(formValues) {
         }
       )
       .then((response) => {
+        dispatch(slice.actions.updateRegisterEmail({ email: "" }));
+        // local storage
+        window.localStorage.setItem("userId", response.data.userId);
         dispatch(
           slice.actions.logIn({
             isLoggedIn: true,

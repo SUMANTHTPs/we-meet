@@ -1,6 +1,6 @@
 import io from "socket.io-client"; // Add this
 let socket;
-const connectSocket = (user_id) => {
+const connectSocket = (userId) => {
   socket = io("http://localhost:5000", {
     query: `userId=${window.localStorage.getItem("userId")}`,
   });

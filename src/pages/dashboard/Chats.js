@@ -25,10 +25,31 @@ import {
   StyledInputBase,
 } from "../../components/search";
 import Friends from "../../sections/dashboard/Friends";
+import { useDispatch, useSelector } from "react-redux";
+import { FetchDirectConversations } from "../../redux/slices/conversation";
+import { socket } from "../../socket";
+import { useEffect } from "react";
+
+const userId = window.localStorage.getItem("userId");
 
 const Chats = () => {
   const theme = useTheme();
   const isDesktop = useResponsive("up", "md");
+
+  const dispatch = useDispatch();
+
+  const { conversations } = useSelector(
+    (state) => state.conversation.directChat
+  );
+
+  useEffect(() => {
+    socket.emit("get_direct_conversations", { userId }, (data) => {
+      console.log(data); // this data is the list of conversations
+      // dispatch action
+
+      dispatch(FetchDirectConversations({ conversations: data }));
+    });
+  }, []);
 
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -102,18 +123,18 @@ const Chats = () => {
           <Stack sx={{ flexGrow: 1, overflow: "scroll", height: "100%" }}>
             <SimpleBarStyle timeout={500} clickOnTrack={false}>
               <Stack spacing={2.4}>
-                <Typography variant="subtitle2" sx={{ color: "#676667" }}>
+                {/* <Typography variant="subtitle2" sx={{ color: "#676667" }}>
                   Pinned
                 </Typography>
                 {/* Chat List */}
-                {ChatList.filter((el) => el.pinned).map((el, idx) => {
+                {/* {ChatList.filter((el) => el.pinned).map((el, idx) => {
                   return <ChatElement key={idx} {...el} />;
-                })}
+                })} */}
                 <Typography variant="subtitle2" sx={{ color: "#676667" }}>
                   All Chats
                 </Typography>
                 {/* Chat List */}
-                {ChatList.filter((el) => !el.pinned).map((el, idx) => {
+                {conversations?.filter((el) => !el.pinned).map((el, idx) => {
                   return <ChatElement key={idx} {...el} />;
                 })}
               </Stack>

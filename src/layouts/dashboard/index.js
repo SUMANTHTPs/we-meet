@@ -5,12 +5,18 @@ import useResponsive from "../../hooks/useResponsive";
 import SideNav from "./SideNav";
 import { useDispatch, useSelector } from "react-redux";
 import { connectSocket, socket } from "../../socket";
-import { showSnackbar } from "../../redux/slices/app";
+import { SelectConversation, showSnackbar } from "../../redux/slices/app";
+import {
+  AddDirectConversation,
+  UpdateDirectConversation,
+} from "../../redux/slices/conversation";
 
 const DashboardLayout = () => {
   const isDesktop = useResponsive("up", "md");
-
   const { isLoggedIn } = useSelector((state) => state.auth);
+  const { conversations } = useSelector(
+    (state) => state.conversation.directChat
+  );
   const dispatch = useDispatch();
 
   const userId = window.localStorage.getItem("userId");
@@ -23,9 +29,45 @@ const DashboardLayout = () => {
           window.location.reload();
         }
       };
+
+      window.onload();
+
       if (!socket) {
         connectSocket(userId);
       }
+
+      socket.on("start_chat", (data) => {
+        console.log(data);
+        // add / update to conversation list
+        const existingConversation = conversations.find(
+          (el) => el.id === data._id
+        );
+        if (existingConversation) {
+          // update direct conversation
+          dispatch(UpdateDirectConversation({ conversation: data }));
+        } else {
+          // add direct conversation
+          dispatch(AddDirectConversation({ conversation: data }));
+        }
+        dispatch(SelectConversation({ roomId: data._id }));
+      });
+
+      socket.on("open_chat", (data) => {
+        console.log(data);
+        // add / update to conversation list
+        const existingConversation = conversations.find(
+          (el) => el.id === data._id
+        );
+        if (existingConversation) {
+          // update direct conversation
+          dispatch(UpdateDirectConversation({ conversation: data }));
+        } else {
+          // add direct conversation
+          dispatch(AddDirectConversation({ conversation: data }));
+        }
+        dispatch(SelectConversation({ roomId: data._id }));
+      });
+
       socket.on("new_friend_request", (data) => {
         dispatch(
           showSnackbar({
@@ -51,8 +93,11 @@ const DashboardLayout = () => {
 
     // Remove event listener on component unmount
     return () => {
-      socket.off("new_friend_request");
-      socket.off("request_accepted");
+      socket?.off("new_friend_request");
+      socket?.off("request_accepted");
+      socket?.off("request_sent");
+      socket?.off("open_chat");
+      socket?.off("start_chat");
     };
   }, [isLoggedIn, socket]);
 
