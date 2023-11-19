@@ -216,7 +216,7 @@ const FriendElement = ({
           <IconButton
             onClick={() => {
               // start a new conversation
-              socket.emit("start-conversation", { to: _id, from: userId });
+              socket.emit("start_conversation", { to: _id, from: userId });
             }}
           >
             <Chat />

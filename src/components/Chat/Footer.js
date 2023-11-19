@@ -26,6 +26,10 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { useSelector } from "react-redux";
 
+import { socket } from "../../socket";
+import { useRef } from "react";
+import { useState } from "react";
+
 const StyledInput = styled(TextField)(({ theme }) => ({
   "& .MuiInputBase-input": {
     paddingTop: "12px !important",
@@ -66,11 +70,22 @@ const Actions = [
   },
 ];
 
-const ChatInput = ({ openPicker, setOpenPicker }) => {
+const ChatInput = ({
+  openPicker,
+  setOpenPicker,
+  setValue,
+  value,
+  inputRef,
+}) => {
   const [openActions, setOpenActions] = React.useState(false);
 
   return (
     <StyledInput
+      inputRef={inputRef}
+      value={value}
+      onChange={(event) => {
+        setValue(event.target.value);
+      }}
       fullWidth
       placeholder="Write a message..."
       variant="filled"
@@ -132,14 +147,54 @@ const ChatInput = ({ openPicker, setOpenPicker }) => {
   );
 };
 
+function linkify(text) {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.replace(
+    urlRegex,
+    (url) => `<a href="${url}" target="_blank">${url}</a>`
+  );
+}
+
+function containsUrl(text) {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return urlRegex.test(text);
+}
+
 const Footer = () => {
   const theme = useTheme();
 
+  const { currentConversation } = useSelector(
+    (state) => state.conversation.directChat
+  );
+
+  const userId = window.localStorage.getItem("userId");
+
   const isMobile = useResponsive("between", "md", "xs", "sm");
 
-  const { sideBar } = useSelector((state) => state.app);
+  const { sideBar, roomId } = useSelector((state) => state.app);
 
-  const [openPicker, setOpenPicker] = React.useState(false);
+  const [openPicker, setOpenPicker] = useState(false);
+
+  const [value, setValue] = useState("");
+  const inputRef = useRef(null);
+
+  function handleEmojiClick(emoji) {
+    const input = inputRef.current;
+
+    if (input) {
+      const selectionStart = input.selectionStart;
+      const selectionEnd = input.selectionEnd;
+
+      setValue(
+        value.substring(0, selectionStart) +
+          emoji +
+          value.substring(selectionEnd)
+      );
+
+      // Move the cursor to the end of the inserted emoji
+      input.selectionStart = input.selectionEnd = selectionStart + 1;
+    }
+  }
   return (
     <Box
       sx={{
@@ -172,11 +227,17 @@ const Footer = () => {
               <Picker
                 theme={theme.palette.mode}
                 data={data}
-                onEmojiSelect={console.log}
+                onEmojiSelect={(emoji) => handleEmojiClick(emoji.native)}
               />
             </Box>
             {/* Chat Input */}
-            <ChatInput openPicker={openPicker} setOpenPicker={setOpenPicker} />
+            <ChatInput
+              inputRef={inputRef}
+              value={value}
+              setValue={setValue}
+              openPicker={openPicker}
+              setOpenPicker={setOpenPicker}
+            />
           </Stack>
           <Box
             sx={{
@@ -191,7 +252,17 @@ const Footer = () => {
               alignItems={"center"}
               justifyContent="center"
             >
-              <IconButton>
+              <IconButton
+                onClick={() => {
+                  socket.emit("text_message", {
+                    message: value,
+                    conversationId: roomId,
+                    from: userId,
+                    to: currentConversation.userId,
+                    type: containsUrl(value) ? "Link" : "Text",
+                  });
+                }}
+              >
                 <PaperPlaneTilt color="#ffffff" />
               </IconButton>
             </Stack>

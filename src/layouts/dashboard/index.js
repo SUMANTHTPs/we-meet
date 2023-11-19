@@ -9,12 +9,13 @@ import { SelectConversation, showSnackbar } from "../../redux/slices/app";
 import {
   AddDirectConversation,
   UpdateDirectConversation,
+  AddDirectMessage,
 } from "../../redux/slices/conversation";
 
 const DashboardLayout = () => {
   const isDesktop = useResponsive("up", "md");
   const { isLoggedIn } = useSelector((state) => state.auth);
-  const { conversations } = useSelector(
+  const { conversations, currentConversation } = useSelector(
     (state) => state.conversation.directChat
   );
   const dispatch = useDispatch();
@@ -35,6 +36,24 @@ const DashboardLayout = () => {
       if (!socket) {
         connectSocket(userId);
       }
+
+      socket.on("new_message", (data) => {
+        const message = data.message;
+        console.log(currentConversation, data);
+        // check if msg we got is from currently selected conversation
+        if (currentConversation.id === data.conversationId) {
+          dispatch(
+            AddDirectMessage({
+              id: message._id,
+              type: "msg",
+              subtype: message.type,
+              message: message.text,
+              incoming: message.to === userId,
+              outgoing: message.from === userId,
+            })
+          );
+        }
+      });
 
       socket.on("start_chat", (data) => {
         console.log(data);
@@ -98,6 +117,7 @@ const DashboardLayout = () => {
       socket?.off("request_sent");
       socket?.off("open_chat");
       socket?.off("start_chat");
+      socket?.off("new_message");
     };
   }, [isLoggedIn, socket]);
 
