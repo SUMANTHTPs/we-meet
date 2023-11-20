@@ -15,12 +15,11 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { CaretDown, MagnifyingGlass, Phone, VideoCamera } from "phosphor-react";
 import { faker } from "@faker-js/faker";
-import { useSearchParams } from "react-router-dom";
 import useResponsive from "../../hooks/useResponsive";
 import { ToggleSidebar } from "../../redux/slices/app";
 import { useDispatch, useSelector } from "react-redux";
-import CallDialog from "../../sections/dashboard/CallDialog";
 import { UpdateAudioCallDialog } from "../../redux/slices/audioCall";
+import CallDialog from "../../sections/dashboard/audio/CallDialog";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {

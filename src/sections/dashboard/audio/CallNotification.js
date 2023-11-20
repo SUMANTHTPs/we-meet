@@ -13,8 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   ResetAudioCallQueue,
   UpdateAudioCallDialog,
-} from "../../redux/slices/audioCall";
-import { socket } from "../../socket";
+} from "../../../redux/slices/audioCall";
+import { socket } from "../../../socket";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

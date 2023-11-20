@@ -11,8 +11,8 @@ import {
   UpdateDirectConversation,
   AddDirectMessage,
 } from "../../redux/slices/conversation";
-import CallNotification from "../../sections/dashboard/CallNotification";
 import { CloseAudioNotificationDialog, PushToAudioCallQueue } from "../../redux/slices/audioCall";
+import CallNotification from "../../sections/dashboard/audio/CallNotification";
 
 const DashboardLayout = () => {
   const isDesktop = useResponsive("up", "md");

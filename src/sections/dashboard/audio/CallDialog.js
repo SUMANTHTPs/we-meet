@@ -14,9 +14,9 @@ import { faker } from "@faker-js/faker";
 import { ZegoExpressEngine } from "zego-express-engine-webrtc";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import axiosInstance from "../../utils/axios";
-import { ResetAudioCallQueue } from "../../redux/slices/audioCall";
-import { socket } from "../../socket";
+import axiosInstance from "../../../utils/axios";
+import { ResetAudioCallQueue } from "../../../redux/slices/audioCall";
+import { socket } from "../../../socket";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

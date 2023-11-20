@@ -16,6 +16,7 @@ const initialState = {
     message: null,
   },
   users: [], // all users of app who are not friends and not requested yet
+  allUsers: [],
   friends: [], // all friends
   friendRequests: [], // all friend requests
   socket: null,
@@ -36,6 +37,9 @@ const slice = createSlice({
     },
     updateTab(state, action) {
       state.tab = action.payload.tab;
+    },
+    updateAllUsers(state, action) {
+      state.allUsers = action.payload.users;
     },
     openSnackBar(state, action) {
       console.log(action.payload);
@@ -188,3 +192,26 @@ export const SelectConversation = ({ roomId }) => {
     dispatch(slice.actions.selectConversation({ roomId }));
   };
 };
+
+export function FetchAllUsers() {
+  return async (dispatch, getState) => {
+    await axios
+      .get(
+        "/user/get-all-verified-users",
+
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getState().auth.token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        dispatch(slice.actions.updateAllUsers({ users: response.data.data }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+}
