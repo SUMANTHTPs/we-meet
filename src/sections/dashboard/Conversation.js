@@ -13,6 +13,8 @@ import { DotsThreeVertical, DownloadSimple, Image } from "phosphor-react";
 import { Message_options } from "../../data";
 import { Link } from "react-router-dom";
 import truncateString from "../../utils/truncate";
+import { LinkPreview } from "@dhaiwat10/react-link-preview";
+import Embed from "react-embed";
 
 const MessageOption = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -187,17 +189,11 @@ const LinkMsg = ({ el, menu }) => {
               style={{ maxHeight: 210, borderRadius: "10px" }}
             />
             <Stack direction={"column"} spacing={2}>
-              <Typography variant="subtitle2" textAlign={"start"}>
-                Creating Chat App using MERN
-              </Typography>
-              <Typography
-                component={Link}
-                to="//https://www.youtube.com"
-                variant="subtitle2"
-                sx={{ color: theme.palette.primary.main }}
-              >
-                {truncateString("www.youtube.com/watch/v12uqywHTY2", 16)}
-              </Typography>
+              <Embed
+                width="300px"
+                isDark
+                url={`https://youtu.be/xoWxBR34qLE`}
+              />
             </Stack>
           </Stack>
           <Typography

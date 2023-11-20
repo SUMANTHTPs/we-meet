@@ -11,9 +11,12 @@ import {
   UpdateDirectConversation,
   AddDirectMessage,
 } from "../../redux/slices/conversation";
+import CallNotification from "../../sections/dashboard/CallNotification";
+import { CloseAudioNotificationDialog, PushToAudioCallQueue } from "../../redux/slices/audioCall";
 
 const DashboardLayout = () => {
   const isDesktop = useResponsive("up", "md");
+  const { openNotificationDialog } = useSelector((state) => state.audioCall);
   const { isLoggedIn } = useSelector((state) => state.auth);
   const { conversations, currentConversation } = useSelector(
     (state) => state.conversation.directChat
@@ -37,6 +40,12 @@ const DashboardLayout = () => {
         connectSocket(userId);
       }
 
+      socket.on("audio_call_notification", (data) => {
+        // TODO => dispatch an action to add this in call_queue
+
+        dispatch(PushToAudioCallQueue(data));
+      });
+
       socket.on("new_message", (data) => {
         const message = data.message;
         console.log(currentConversation, data);
@@ -56,22 +65,6 @@ const DashboardLayout = () => {
       });
 
       socket.on("start_chat", (data) => {
-        console.log(data);
-        // add / update to conversation list
-        const existingConversation = conversations.find(
-          (el) => el.id === data._id
-        );
-        if (existingConversation) {
-          // update direct conversation
-          dispatch(UpdateDirectConversation({ conversation: data }));
-        } else {
-          // add direct conversation
-          dispatch(AddDirectConversation({ conversation: data }));
-        }
-        dispatch(SelectConversation({ roomId: data._id }));
-      });
-
-      socket.on("open_chat", (data) => {
         console.log(data);
         // add / update to conversation list
         const existingConversation = conversations.find(
@@ -115,9 +108,9 @@ const DashboardLayout = () => {
       socket?.off("new_friend_request");
       socket?.off("request_accepted");
       socket?.off("request_sent");
-      socket?.off("open_chat");
       socket?.off("start_chat");
       socket?.off("new_message");
+      socket?.off("audio_call_notification");
     };
   }, [isLoggedIn, socket]);
 
@@ -135,6 +128,12 @@ const DashboardLayout = () => {
 
         <Outlet />
       </Stack>
+      {openNotificationDialog && (
+        <CallNotification
+          open={openNotificationDialog}
+          handleClose={CloseAudioNotificationDialog}
+        />
+      )}
     </>
   );
 };
