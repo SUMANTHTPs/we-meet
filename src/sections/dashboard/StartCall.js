@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,12 +14,29 @@ import {
 import { MagnifyingGlass } from "phosphor-react";
 import { CallElement } from "../../components/CallElement";
 import { CallList } from "../../data";
+import { useDispatch, useSelector } from "react-redux";
+import { FetchAllUsers } from "../../redux/slices/app";
+import { faker } from "@faker-js/faker";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const StartCall = ({ open, handleClose }) => {
+  const { allUsers } = useSelector((state) => state.app);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(FetchAllUsers());
+  }, []);
+
+  console.log(CallList, allUsers, "Call List Info");
+
+  const list = allUsers.map((el) => ({
+    id: el._id,
+    name: `${el.firstName} ${el.lastName}`,
+    image: faker.image.avatar(),
+  }));
+
   return (
     <Dialog
       fullWidth
@@ -32,8 +49,8 @@ const StartCall = ({ open, handleClose }) => {
       sx={{ p: 4 }}
     >
       <DialogTitle>{"Start New Conversation"}</DialogTitle>
-      <Stack p={2} sx={{ width: "100%" }}>
-        <Search>
+      <Stack p={1} sx={{ width: "100%" }}>
+        {/* <Search>
           <SearchIconWrapper>
             <MagnifyingGlass color="#709CE6" />
           </SearchIconWrapper>
@@ -41,13 +58,15 @@ const StartCall = ({ open, handleClose }) => {
             placeholder="Search…"
             inputProps={{ "aria-label": "search" }}
           />
-        </Search>
+        </Search> */}
       </Stack>
       <DialogContent>
         <Stack sx={{ height: "100%" }}>
           <Stack spacing={2.4}>
-            {CallList.map((el, idx) => {
-              return <CallElement key={idx} {...el} />;
+            {list.map((el, idx) => {
+              return (
+                <CallElement key={idx} {...el} handleClose={handleClose} />
+              );
             })}
           </Stack>
         </Stack>

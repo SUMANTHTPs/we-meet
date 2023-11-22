@@ -18,8 +18,8 @@ import { faker } from "@faker-js/faker";
 import useResponsive from "../../hooks/useResponsive";
 import { ToggleSidebar } from "../../redux/slices/app";
 import { useDispatch, useSelector } from "react-redux";
-import { UpdateAudioCallDialog } from "../../redux/slices/audioCall";
-import CallDialog from "../../sections/dashboard/audio/CallDialog";
+import { StartAudioCall } from "../../redux/slices/audioCall";
+import { StartVideoCall } from "../../redux/slices/videoCall";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -70,13 +70,14 @@ const ChatHeader = () => {
   const isMobile = useResponsive("between", "md", "xs", "sm");
   const theme = useTheme();
 
-  const { openAudioDialog } = useSelector((state) => state.audioCall);
-
-  const [openVoiceDialog, setOpenVoiceDialog] = useState(false);
+  const { currentConversation } = useSelector(
+    (state) => state.conversation.directChat
+  );
 
   const [conversationMenuAnchorEl, setConversationMenuAnchorEl] =
     React.useState(null);
   const openConversationMenu = Boolean(conversationMenuAnchorEl);
+
   const handleClickConversationMenu = (event) => {
     setConversationMenuAnchorEl(event.currentTarget);
   };
@@ -84,13 +85,7 @@ const ChatHeader = () => {
     setConversationMenuAnchorEl(null);
   };
 
-  const handleOpenAudioDialog = () => {
-    dispatch(UpdateAudioCallDialog({ state: true }));
-  };
-
-  const handleCloseAudioDialog = () => {
-    dispatch(UpdateAudioCallDialog({ state: false }));
-  };
+  console.log(currentConversation)
 
   return (
     <>
@@ -145,13 +140,16 @@ const ChatHeader = () => {
             alignItems="center"
             spacing={isMobile ? 1 : 3}
           >
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                dispatch(StartVideoCall(currentConversation.userId));
+              }}
+            >
               <VideoCamera />
             </IconButton>
             <IconButton
               onClick={() => {
-                // open call Dialog Box
-                handleOpenAudioDialog();
+                dispatch(StartAudioCall(currentConversation.userId));
               }}
             >
               <Phone />
@@ -217,13 +215,6 @@ const ChatHeader = () => {
           </Stack>
         </Stack>
       </Box>
-
-      {openAudioDialog && (
-        <CallDialog
-          open={openAudioDialog}
-          handleClose={handleCloseAudioDialog}
-        />
-      )}
     </>
   );
 };
