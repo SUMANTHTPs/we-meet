@@ -1,4 +1,3 @@
-import React, { useRef, useState } from "react";
 import {
   Avatar,
   Button,
@@ -8,24 +7,24 @@ import {
   Slide,
   Stack,
 } from "@mui/material";
+import React, { useRef, useState } from "react";
 
 import { Microphone, MicrophoneSlash } from "phosphor-react";
 
-import { ZegoExpressEngine } from "zego-express-engine-webrtc";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import axiosInstance from "../../../utils/axios";
+import { useDispatch, useSelector } from "react-redux";
+import { ZegoExpressEngine } from "zego-express-engine-webrtc";
+import { AWS_S3_REGION, S3_BUCKET_NAME } from "../../../config";
 import { ResetAudioCallQueue } from "../../../redux/slices/audioCall";
 import { socket } from "../../../socket";
-import { AWS_S3_REGION, S3_BUCKET_NAME } from "../../../config";
+import axiosInstance from "../../../utils/axios";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const CallDialog = ({ open, handleClose }) => {
-  const { directChat } = useSelector((state) => state.conversation);
-  const { token, userId } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isAudioMuted, setIsAudioMuted] = useState(false);
 
@@ -213,7 +212,7 @@ const CallDialog = ({ open, handleClose }) => {
                 // * we can use this info to show connection status
               });
 
-              zg.on("publishQualityUpdate", (streamID, stats) => {
+              zg.on("publishQualityUpdate", () => {
                 // Callback for reporting stream publishing quality.
                 // ...
                 // console.log(streamID, stats);
@@ -225,7 +224,7 @@ const CallDialog = ({ open, handleClose }) => {
             });
 
           // Callback for updates on the current user's room connection status.
-          zg.on("roomStateUpdate", (roomID, state, errorCode, extendedData) => {
+          zg.on("roomStateUpdate", (roomID, state) => {
             if (state === "DISCONNECTED") {
               // Disconnected from the room
               // * Can be used to show disconnected status for a user (especially useful in a group call)
@@ -296,13 +295,13 @@ const CallDialog = ({ open, handleClose }) => {
             }
           );
 
-          zg.on("playerStateUpdate", (result) => {
+          zg.on("playerStateUpdate", () => {
             // Callback for updates on stream playing status.
             // ...
             // * Can be used to display realtime status of a remote audio stream (Connecting, connected & Disconnected)
           });
 
-          zg.on("playQualityUpdate", (streamID, stats) => {
+          zg.on("playQualityUpdate", () => {
             // Callback for reporting stream playing quality.
             // * Can be used to display realtime quality of a remote audio stream
           });

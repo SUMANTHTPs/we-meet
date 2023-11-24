@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -7,28 +6,27 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import {
   ArchiveBox,
   CircleDashed,
   MagnifyingGlass,
   Users,
 } from "phosphor-react";
-import { SimpleBarStyle } from "../../components/Scrollbar";
-import { useTheme } from "@mui/material/styles";
-import useResponsive from "../../hooks/useResponsive";
-import BottomNav from "../../layouts/dashboard/BottomNav";
-import { ChatList } from "../../data";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ChatElement from "../../components/ChatElement";
+import { SimpleBarStyle } from "../../components/Scrollbar";
 import {
   Search,
   SearchIconWrapper,
   StyledInputBase,
 } from "../../components/search";
-import Friends from "../../sections/dashboard/Friends";
-import { useDispatch, useSelector } from "react-redux";
+import useResponsive from "../../hooks/useResponsive";
+import BottomNav from "../../layouts/dashboard/BottomNav";
 import { FetchDirectConversations } from "../../redux/slices/conversation";
+import Friends from "../../sections/dashboard/Friends";
 import { socket } from "../../socket";
-import { useEffect } from "react";
 
 const userId = window.localStorage.getItem("userId");
 

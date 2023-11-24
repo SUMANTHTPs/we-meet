@@ -1,15 +1,15 @@
 import React, { useCallback, useState } from "react";
 import * as Yup from "yup";
 // form
-import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import FormProvider from "../../components/hook-form/FormProvider";
-import { RHFTextField, RHFUploadAvatar } from "../../components/hook-form";
-import { Stack } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { Stack } from "@mui/material";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { UpdateUserProfile } from "../../redux/slices/app";
+import { RHFTextField, RHFUploadAvatar } from "../../components/hook-form";
+import FormProvider from "../../components/hook-form/FormProvider";
 import { AWS_S3_REGION, S3_BUCKET_NAME } from "../../config";
+import { UpdateUserProfile } from "../../redux/slices/app";
 
 const ProfileForm = () => {
   const dispatch = useDispatch();

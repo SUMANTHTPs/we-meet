@@ -1,19 +1,17 @@
-import React, { useEffect, useRef } from "react";
 import {
-  Avatar,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   Slide,
-  Stack,
+  Stack
 } from "@mui/material";
-import { faker } from "@faker-js/faker";
-import { ZegoExpressEngine } from "zego-express-engine-webrtc";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axiosInstance from "../../../utils/axios";
-import { socket } from "../../../socket";
+import { ZegoExpressEngine } from "zego-express-engine-webrtc";
 import { ResetVideoCallQueue } from "../../../redux/slices/videoCall";
+import { socket } from "../../../socket";
+import axiosInstance from "../../../utils/axios";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

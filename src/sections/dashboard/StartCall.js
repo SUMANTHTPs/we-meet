@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,18 +5,12 @@ import {
   Slide,
   Stack,
 } from "@mui/material";
-import {
-  Search,
-  SearchIconWrapper,
-  StyledInputBase,
-} from "../../components/search";
-import { MagnifyingGlass } from "phosphor-react";
-import { CallElement } from "../../components/CallElement";
-import { CallList } from "../../data";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FetchAllUsers } from "../../redux/slices/app";
-import { faker } from "@faker-js/faker";
+import { CallElement } from "../../components/CallElement";
 import { AWS_S3_REGION, S3_BUCKET_NAME } from "../../config";
+import { CallList } from "../../data";
+import { FetchAllUsers } from "../../redux/slices/app";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -28,6 +21,7 @@ const StartCall = ({ open, handleClose }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(FetchAllUsers());
+    // eslint-disable-next-line
   }, []);
 
   console.log(CallList, allUsers, "Call List Info");
