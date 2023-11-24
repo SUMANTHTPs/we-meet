@@ -329,22 +329,24 @@ const CallDialog = ({ open, handleClose }) => {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogContent>
-          <Stack direction="row" spacing={24} p={2}>
+          <Stack direction="row" spacing={4} p={2}>
             <Stack>
               <video
-                style={{ height: 200, width: 200 }}
+                style={{ height: 250, width: 250 }}
                 id="local-video"
                 controls={false}
+                ref={videoStreamRef}
               />
-              <audio id="local-audio" controls={false} />
+              <audio ref={audioStreamRef} id="local-audio" controls={false} />
             </Stack>
             <Stack>
               <video
-                style={{ height: 200, width: 200 }}
+                style={{ height: 250, width: 250 }}
                 id="remote-video"
                 controls={false}
+                ref={videoStreamRef}
               />
-              <audio id="remote-audio" controls={false} />
+              <audio ref={audioStreamRef} id="remote-audio" controls={false} />
             </Stack>
           </Stack>
         </DialogContent>

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Avatar,
   Button,
@@ -9,7 +9,7 @@ import {
   Stack,
 } from "@mui/material";
 
-import { faker } from "@faker-js/faker";
+import { Microphone, MicrophoneSlash } from "phosphor-react";
 
 import { ZegoExpressEngine } from "zego-express-engine-webrtc";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +27,7 @@ const CallDialog = ({ open, handleClose }) => {
   const { directChat } = useSelector((state) => state.conversation);
   const { token, userId } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
 
   const { user } = useSelector((state) => state.app);
 
@@ -53,6 +54,20 @@ const CallDialog = ({ open, handleClose }) => {
   const zg = new ZegoExpressEngine(appID, server);
 
   const streamID = callDetails?.streamID;
+
+  const handleMuteToggle = async () => {
+    try {
+      if (isAudioMuted) {
+        await zg.unmuteAudio();
+        setIsAudioMuted(false);
+      } else {
+        await zg.muteAudio();
+        setIsAudioMuted(true);
+      }
+    } catch (error) {
+      console.error("Error toggling audio:", error);
+    }
+  };
 
   const handleDisconnect = (event, reason) => {
     if (reason && reason === "backdropClick") {
@@ -188,7 +203,7 @@ const CallDialog = ({ open, handleClose }) => {
               // The local stream is a MediaStream object. You can render audio by assigning the local stream to the srcObject property of video or audio.
               localAudio.srcObject = localStream;
 
-              // localStream is the MediaStream object created by calling creatStream in the previous step.
+              // localStream is the MediaStream object created by calling create Stream in the previous step.
               zg.startPublishingStream(streamID, localStream);
 
               zg.on("publisherStateUpdate", (result) => {
@@ -326,7 +341,18 @@ const CallDialog = ({ open, handleClose }) => {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDisconnect} variant="contained" color="error">
+          <Button
+            onClick={handleMuteToggle}
+            variant="outlined"
+            color="primary"
+          >
+            {isAudioMuted ? <MicrophoneSlash /> : <Microphone />}
+          </Button>
+          <Button
+            onClick={handleDisconnect}
+            variant="contained"
+            color="error"
+          >
             End Call
           </Button>
         </DialogActions>
