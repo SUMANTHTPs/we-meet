@@ -19,19 +19,20 @@ const slice = createSlice({
   reducers: {
     fetchDirectConversations(state, action) {
       const list = action.payload.conversations.map((el) => {
-        const user = el.participants.find(
+        const user = el?.participants.find(
           (elm) => elm._id.toString() !== userId
         );
         return {
-          id: el._id,
-          userId: user._id,
-          name: `${user.firstName} ${user.lastName}`,
-          online: user.status === "Online",
+          id: el?._id,
+          userId: user?._id,
+          name: `${user?.firstName} ${user?.lastName}`,
+          online: user?.status === "Online",
           img: `https://${S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${user?.avatar}`,
-          msg: el.messages.slice(-1)[0].text,
+          msg: el?.messages.slice(-1)[0].text,
           time: "9:36",
           unread: 0,
           pinned: false,
+          about: user?.about,
         };
       });
 
@@ -41,7 +42,7 @@ const slice = createSlice({
       const thisConversation = action.payload.conversation;
       state.directChat.conversations = state.directChat.conversations.map(
         (el) => {
-          if (el.id !== thisConversation._id) {
+          if (el?.id !== thisConversation._id) {
             return el;
           } else {
             const user = thisConversation.participants.find(
@@ -49,9 +50,9 @@ const slice = createSlice({
             );
             return {
               id: thisConversation._id._id,
-              userId: user._id,
-              name: `${user.firstName} ${user.lastName}`,
-              online: user.status === "Online",
+              userId: user?._id,
+              name: `${user?.firstName} ${user?.lastName}`,
+              online: user?.status === "Online",
               img: faker.image.avatar(),
               msg: faker.music.songName(),
               time: "9:36",
@@ -68,13 +69,13 @@ const slice = createSlice({
         (elm) => elm._id.toString() !== userId
       );
       state.directChat.conversations = state.directChat.conversations.filter(
-        (el) => el.id !== thisConversation._id
+        (el) => el?.id !== thisConversation._id
       );
       state.directChat.conversations.push({
         id: thisConversation._id._id,
-        userId: user._id,
-        name: `${user.firstName} ${user.lastName}`,
-        online: user.status === "Online",
+        userId: user?._id,
+        name: `${user?.firstName} ${user?.lastName}`,
+        online: user?.status === "Online",
         img: faker.image.avatar(),
         msg: faker.music.songName(),
         time: "9:36",
@@ -88,12 +89,12 @@ const slice = createSlice({
     fetchCurrentMessages(state, action) {
       const messages = action.payload.messages;
       const formattedMessages = messages.map((el) => ({
-        id: el._id,
+        id: el?._id,
         type: "msg",
-        subtype: el.type,
-        message: el.text,
-        incoming: el.to === userId,
-        outgoing: el.from === userId,
+        subtype: el?.type,
+        message: el?.text,
+        incoming: el?.to === userId,
+        outgoing: el?.from === userId,
       }));
       state.directChat.currentMessages = formattedMessages;
     },

@@ -17,6 +17,7 @@ import { CallList } from "../../data";
 import { useDispatch, useSelector } from "react-redux";
 import { FetchAllUsers } from "../../redux/slices/app";
 import { faker } from "@faker-js/faker";
+import { AWS_S3_REGION, S3_BUCKET_NAME } from "../../config";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -32,9 +33,11 @@ const StartCall = ({ open, handleClose }) => {
   console.log(CallList, allUsers, "Call List Info");
 
   const list = allUsers.map((el) => ({
-    id: el._id,
-    name: `${el.firstName} ${el.lastName}`,
-    image: faker.image.avatar(),
+    id: el?._id,
+    name: `${el?.firstName} ${el?.lastName}`,
+    image: el?.avatar
+      ? `https://${S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${el?.avatar}`
+      : "",
   }));
 
   return (
