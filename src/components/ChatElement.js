@@ -3,6 +3,8 @@ import { Box, Badge, Stack, Avatar, Typography } from "@mui/material";
 import { styled, useTheme, alpha } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { SelectConversation } from "../redux/slices/app";
+import { AWS_S3_REGION, S3_BUCKET_NAME } from "../config";
+
 
 const truncateText = (string, n) => {
   return string?.length > n ? `${string?.slice(0, n)}...` : string;
@@ -89,10 +91,16 @@ const ChatElement = ({ img, name, msg, time, unread, online, id }) => {
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar alt={name} src={img} />
+              <Avatar
+                alt={name}
+                src={`https://${S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${img}`}
+              />
             </StyledBadge>
           ) : (
-            <Avatar alt={name} src={img} />
+            <Avatar
+              alt={name}
+              src={`https://${S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${img}`}
+            />
           )}
           <Stack spacing={0.3}>
             <Typography variant="subtitle2">{name}</Typography>

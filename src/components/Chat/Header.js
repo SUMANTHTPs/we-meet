@@ -85,8 +85,6 @@ const ChatHeader = () => {
     setConversationMenuAnchorEl(null);
   };
 
-  console.log(currentConversation)
-
   return (
     <>
       <Box
@@ -123,14 +121,14 @@ const ChatHeader = () => {
                 variant="dot"
               >
                 <Avatar
-                  alt={faker.name.fullName()}
-                  src={faker.image.avatar()}
+                  alt={currentConversation?.name ?? "Unknown"}
+                  src={currentConversation?.img}
                 />
               </StyledBadge>
             </Box>
             <Stack spacing={0.2}>
               <Typography variant="subtitle2">
-                {faker.name.fullName()}
+                {currentConversation?.name}
               </Typography>
               <Typography variant="caption">Online</Typography>
             </Stack>

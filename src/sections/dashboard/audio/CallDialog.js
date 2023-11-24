@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import axiosInstance from "../../../utils/axios";
 import { ResetAudioCallQueue } from "../../../redux/slices/audioCall";
 import { socket } from "../../../socket";
+import { AWS_S3_REGION, S3_BUCKET_NAME } from "../../../config";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -26,6 +27,8 @@ const CallDialog = ({ open, handleClose }) => {
   const { directChat } = useSelector((state) => state.conversation);
   const { token, userId } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.app);
 
   const audioStreamRef = useRef(null);
 
@@ -309,14 +312,14 @@ const CallDialog = ({ open, handleClose }) => {
             <Stack>
               <Avatar
                 sx={{ height: 100, width: 100 }}
-                src={faker.image.avatar()}
+                src={`https://${S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${callDetails?.fromUser?.avatar}`}
               />
               <audio id="local-audio" controls={false} />
             </Stack>
             <Stack>
               <Avatar
                 sx={{ height: 100, width: 100 }}
-                src={faker.image.avatar()}
+                src={`https://${S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${user?.avatar}`}
               />
               <audio id="remote-audio" controls={false} />
             </Stack>

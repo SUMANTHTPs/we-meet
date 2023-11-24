@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { CaretLeft } from "phosphor-react";
 import ProfileForm from "../../../sections/settings/ProfileForm";
+import { FetchUserProfile } from "../../../redux/slices/app";
+import { useDispatch } from "react-redux";
 
 const Profile = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(FetchUserProfile());
+  }, []);
+
   return (
     <>
       <Stack direction="row" sx={{ width: "100%" }}>

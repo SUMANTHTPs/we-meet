@@ -7,10 +7,14 @@ import { Profile_Menu } from "../../data";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutUser } from "../../redux/slices/auth";
 import { socket } from "../../socket";
+import { useNavigate } from "react-router-dom";
+import { AWS_S3_REGION, S3_BUCKET_NAME } from "../../config";
 
 const ProfileMenu = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { user } = useSelector((state) => state.app);
   const openMenu = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -19,6 +23,8 @@ const ProfileMenu = () => {
     setAnchorEl(null);
   };
 
+  const userName = user?.firstName;
+  const userImg = `https://${S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${user?.avatar}`;
   const userId = window.localStorage.getItem("userId");
 
   return (
@@ -28,8 +34,8 @@ const ProfileMenu = () => {
         aria-controls={openMenu ? "profile-positioned-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={openMenu ? "true" : undefined}
-        alt={faker.name.fullName()}
-        src={faker.image.avatar()}
+        alt={userName}
+        src={userImg}
         onClick={handleClick}
       />
       <Menu
@@ -57,7 +63,11 @@ const ProfileMenu = () => {
               <MenuItem key={idx} onClick={handleClose}>
                 <Stack
                   onClick={() => {
-                    if (idx === 2) {
+                    if (idx === 0) {
+                      navigate("/profile");
+                    } else if (idx === 1) {
+                      navigate("/settings");
+                    } else {
                       dispatch(LogoutUser());
                       socket.emit("end", { userId });
                     }

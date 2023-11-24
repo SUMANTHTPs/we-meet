@@ -11,6 +11,8 @@ import { Nav_Buttons, Nav_Setting } from "../../data";
 
 import ProfileMenu from "./ProfileMenu";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { UpdateTab } from "../../redux/slices/app";
 
 const getPath = (index) => {
   switch (index) {
@@ -33,15 +35,17 @@ const getPath = (index) => {
 
 const SideBar = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const { tab } = useSelector((state) => state.app);
 
   const navigate = useNavigate();
 
   const { onToggleMode } = useSettings();
 
-  const [selectedTab, setSelectedTab] = React.useState(0);
+  const selectedTab = tab;
 
   const handleChangeTab = (index) => {
-    setSelectedTab(index);
+    dispatch(UpdateTab({ tab: index }));
     navigate(getPath(index));
   };
 
@@ -83,7 +87,7 @@ const SideBar = () => {
             spacing={3}
           >
             {Nav_Buttons.map((el) => {
-              return el.index === selectedTab ? (
+              return el.index == selectedTab ? (
                 <Box
                   key={el.index}
                   sx={{
@@ -93,7 +97,9 @@ const SideBar = () => {
                   p={1}
                 >
                   <IconButton
-                    onClick={() => {}}
+                    onClick={() => {
+                      handleChangeTab(el.index);
+                    }}
                     sx={{ width: "max-content", color: "#ffffff" }}
                   >
                     {el.icon}
@@ -119,7 +125,7 @@ const SideBar = () => {
             })}
             <Divider sx={{ width: 48 }} />
             {Nav_Setting.map((el) => {
-              return el.index === selectedTab ? (
+              return el.index == selectedTab ? (
                 <Box
                   key={el.index}
                   sx={{
@@ -131,7 +137,7 @@ const SideBar = () => {
                   <IconButton
                     key={el.index}
                     onClick={() => {
-                      // dispatch(UpdateTab(el.index));
+                      handleChangeTab(el.index);
                     }}
                     sx={{ width: "max-content", color: "#ffffff" }}
                   >

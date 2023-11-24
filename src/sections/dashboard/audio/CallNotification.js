@@ -15,6 +15,7 @@ import {
   UpdateAudioCallDialog,
 } from "../../../redux/slices/audioCall";
 import { socket } from "../../../socket";
+import { AWS_S3_REGION, S3_BUCKET_NAME } from "../../../config";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -23,6 +24,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const CallNotification = ({ open, handleClose }) => {
   const dispatch = useDispatch();
 
+  const { user } = useSelector((state) => state.app);
   const [callDetails] = useSelector((state) => state.audioCall.callQueue);
 
   const handleAccept = () => {
@@ -31,7 +33,6 @@ const CallNotification = ({ open, handleClose }) => {
   };
 
   const handleDeny = () => {
-    //
     socket.emit("audio_call_denied", { ...callDetails });
     dispatch(ResetAudioCallQueue());
     handleClose();
@@ -51,13 +52,13 @@ const CallNotification = ({ open, handleClose }) => {
             <Stack>
               <Avatar
                 sx={{ height: 100, width: 100 }}
-                src={faker.image.avatar()}
+                src={`https://${S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${callDetails?.fromUser?.avatar}`}
               />
             </Stack>
             <Stack>
               <Avatar
                 sx={{ height: 100, width: 100 }}
-                src={faker.image.avatar()}
+                src={`https://${S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${user?.avatar}`}
               />
             </Stack>
           </Stack>
