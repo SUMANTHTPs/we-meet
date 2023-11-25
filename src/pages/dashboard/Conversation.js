@@ -3,7 +3,8 @@ import React, { useEffect, useRef } from "react";
 import { useTheme } from "@mui/material/styles";
 import { SimpleBarStyle } from "../../components/Scrollbar";
 
-import { ChatHeader, ChatFooter } from "../../components/chat";
+import ChatHeader from "../../components/chat/Header";
+import ChatFooter from "../../components/chat/Footer";
 import useResponsive from "../../hooks/useResponsive";
 import { Chat_History } from "../../data";
 import {
