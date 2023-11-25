@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Stack } from "@mui/material";
 import { Navigate, Outlet } from "react-router-dom";
 import useResponsive from "../../hooks/useResponsive";
@@ -154,13 +154,19 @@ const DashboardLayout = () => {
     return <Navigate to={"/auth/login"} />;
   }
 
+  const [alertOpen, setAlertOpen] = useState(true);
+
+  const handleAlertClose = () => {
+    setAlertOpen(false);
+  };
+
   return (
     <>
-      <Alert severity="error">
-        Serverless Functions on Vercel are stateless and have a maximum
-        execution duration. As a result, it is not possible to maintain a
-        WebSocket connection to a Serverless Function. So chatting and calling feature won't work!
-      </Alert>
+      {alertOpen && (
+        <Alert severity="info" onClose={handleAlertClose}>
+          Calling feature needs subscription
+        </Alert>
+      )}
       <Stack direction="row">
         {isDesktop && (
           // SideBar

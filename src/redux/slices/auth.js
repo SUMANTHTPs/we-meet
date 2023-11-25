@@ -88,6 +88,7 @@ export function LogoutUser() {
     dispatch(
       showSnackbar({ severity: "success", message: "Logout successful" })
     );
+    window.location.href = "/auth/login";
   };
 }
 
