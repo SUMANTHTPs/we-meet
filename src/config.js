@@ -4,7 +4,7 @@ import { enUS, frFR, zhCN, viVN, arSD } from "@mui/material/locale";
 // routes
 import { PATH_DASHBOARD } from "./routes/paths";
 
-export const BASE_URL = "http://localhost:5000";
+export const BASE_URL = "https://we-meet-server.vercel.app/";
 
 export const S3_BUCKET_NAME = process.env.REACT_APP_S3_BUCKET_NAME;
 export const AWS_ACCESS_KEY = process.env.REACT_APP_S3_ACCESS_KEY;

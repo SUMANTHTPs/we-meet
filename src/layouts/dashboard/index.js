@@ -5,6 +5,7 @@ import useResponsive from "../../hooks/useResponsive";
 import SideNav from "./SideNav";
 import { useDispatch, useSelector } from "react-redux";
 import { connectSocket, socket } from "../../socket";
+import Alert from "@mui/material/Alert";
 import {
   FetchUserProfile,
   SelectConversation,
@@ -155,6 +156,11 @@ const DashboardLayout = () => {
 
   return (
     <>
+      <Alert severity="error">
+        Serverless Functions on Vercel are stateless and have a maximum
+        execution duration. As a result, it is not possible to maintain a
+        WebSocket connection to a Serverless Function. So chatting and calling feature won't work!
+      </Alert>
       <Stack direction="row">
         {isDesktop && (
           // SideBar
