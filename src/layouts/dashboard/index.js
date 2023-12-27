@@ -32,6 +32,7 @@ import {
 
 const DashboardLayout = () => {
   const isDesktop = useResponsive("up", "md");
+  const [alertOpen, setAlertOpen] = useState(true);
   const dispatch = useDispatch();
   const { openAudioNotificationDialog, openAudioDialog } = useSelector(
     (state) => state.audioCall
@@ -153,8 +154,6 @@ const DashboardLayout = () => {
   if (!isLoggedIn) {
     return <Navigate to={"/auth/login"} />;
   }
-
-  const [alertOpen, setAlertOpen] = useState(true);
 
   const handleAlertClose = () => {
     setAlertOpen(false);
