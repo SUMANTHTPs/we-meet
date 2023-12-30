@@ -2,6 +2,7 @@
   "name": "chat",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://we-meet-server-production.up.railway.app",
   "dependencies": {
     "@dhaiwat10/react-link-preview": "^1.15.0",
     "@emoji-mart/data": "^1.1.2",
