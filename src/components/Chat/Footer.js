@@ -170,6 +170,7 @@ const Footer = () => {
   );
 
   const userId = window.localStorage.getItem("userId");
+  console.log(userId);
 
   const isMobile = useResponsive("between", "md", "xs", "sm");
 
