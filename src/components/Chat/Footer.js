@@ -200,11 +200,12 @@ const Footer = () => {
   }
 
   function handleSendMessage() {
+    console.log(currentConversation?.userId);
     socket.emit("text_message", {
       message: value,
       conversationId: roomId,
       from: userId,
-      to: currentConversation.userId,
+      to: currentConversation?.userId,
       type: containsUrl(value) ? "Link" : "Text",
     });
     setValue("");
